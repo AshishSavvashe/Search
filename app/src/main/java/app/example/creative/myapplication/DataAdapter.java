@@ -1,11 +1,15 @@
 package app.example.creative.myapplication;
 
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -13,6 +17,7 @@ import java.util.ArrayList;
 public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> implements Filterable {
     private ArrayList<AndroidVersion> mArrayList;
     private ArrayList<AndroidVersion> mFilteredList;
+    private Context context;
 
     public DataAdapter(ArrayList<AndroidVersion> arrayList) {
         mArrayList = arrayList;
@@ -26,11 +31,24 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> im
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(ViewHolder viewHolder,  final int i) {
 
         viewHolder.tv_name.setText(mFilteredList.get(i).getName());
         viewHolder.tv_version.setText(mFilteredList.get(i).getVer());
         viewHolder.tv_api_level.setText(mFilteredList.get(i).getApi());
+
+        /*viewHolder.linear.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+
+                Bundle bundle=new Bundle();
+                bundle.putSerializable("Version",mArrayList.get(i).getVer());
+                bundle.putSerializable("Name",mArrayList.get(i).getName());
+                bundle.putSerializable("Api",mArrayList.get(i).getApi());
+                context.startActivity(new Intent(context, ViewDetails.class).putExtras(bundle));
+
+            }
+        });*/
     }
 
     @Override
@@ -80,12 +98,15 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> im
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         private TextView tv_name,tv_version,tv_api_level;
+        private LinearLayout linear;
         public ViewHolder(View view) {
             super(view);
 
             tv_name = (TextView)view.findViewById(R.id.tv_name);
             tv_version = (TextView)view.findViewById(R.id.tv_version);
             tv_api_level = (TextView)view.findViewById(R.id.tv_api_level);
+
+            linear = (LinearLayout) view.findViewById(R.id.linear);
 
         }
     }
